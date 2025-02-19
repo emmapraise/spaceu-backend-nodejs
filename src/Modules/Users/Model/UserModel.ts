@@ -7,3 +7,7 @@ export const indexModel = async () => {
     return await prisma.user.findMany();
 }
 
+export const createUser = async (data: Prisma.UserCreateInput) => {
+    return await prisma.user.create({ data });
+}
+
