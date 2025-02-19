@@ -10,6 +10,10 @@ app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
 
+app.get('/', (req, res) => {
+    res.send('API is running');
+});
+
 app.use('/api/users', UserRoutes)
 
 export default app;
