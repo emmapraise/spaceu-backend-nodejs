@@ -14,14 +14,72 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-  phone_number String
+  id              Int      @id @default(autoincrement())
+  name            String
+  email           String   @unique
+  phone_number    String
   whatsapp_number String?
-  password String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  password        String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 
   @@map("users")
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  url         String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  hero_images Space[]  @relation("hero_images")
+  images      Space[]  @relation("images")
+
+  @@map("images")
+}
+
+model Space {
+  id              Int     @id @default(autoincrement())
+  name            String
+  headline        String?
+  description     String?
+  hero_image_id   Int?
+  hero_images     Image?  @relation(name: "hero_images", fields: [hero_image_id], references: [id])
+  image_id        Int?
+  images          Image?  @relation(name: "images", fields: [image_id], references: [id])
+  price_per_day   Float
+  price_per_week  Float
+  price_per_month Float
+
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  Package    Package[]
+
+  @@map("spaces")
+}
+
+model Package {
+  id           Int            @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Float
+  space_id     Int
+  space        Space          @relation(fields: [space_id], references: [id])
+  type         String
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  PackageOffer PackageOffer[]
+
+  @@map("packages")
+}
+
+model PackageOffer {
+  id               Int      @id @default(autoincrement())
+  offer            String
+  package_id       Int
+  package          Package  @relation(fields: [package_id], references: [id])
+  offer_percentage Float
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@map("package_offers")
 }
