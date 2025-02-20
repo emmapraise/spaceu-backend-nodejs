@@ -46,9 +46,6 @@ model Space {
   hero_images     Image?  @relation(name: "hero_images", fields: [hero_image_id], references: [id])
   image_id        Int?
   images          Image?  @relation(name: "images", fields: [image_id], references: [id])
-  price_per_day   Float
-  price_per_week  Float
-  price_per_month Float
 
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
@@ -67,7 +64,7 @@ model Package {
   type         String
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
-  PackageOffer PackageOffer[]
+  package_offer PackageOffer[]
 
   @@map("packages")
 }
@@ -77,7 +74,6 @@ model PackageOffer {
   offer            String
   package_id       Int
   package          Package  @relation(fields: [package_id], references: [id])
-  offer_percentage Float
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
 
