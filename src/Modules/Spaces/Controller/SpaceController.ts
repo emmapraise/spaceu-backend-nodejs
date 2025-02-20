@@ -8,9 +8,7 @@ export const createSpaceHandler = async (req: Request, res: Response) => {
 		const result = await createSpace(validatedRecord);
 		res.json(result).status(200);
 	} catch (error: any) {
-		return res
-			.status(500)
-			.json({ message: 'Server Error', error: error.message });
+		res.status(500).json({ message: 'Server Error', error: error.message });
 	}
 };
 
@@ -20,9 +18,7 @@ export const createSpaceOnlyHandler = async (req: Request, res: Response) => {
 		const result = await createSpaceOnly(validatedRecord);
 		res.json(result).status(200);
 	} catch (error: any) {
-		return res
-			.status(500)
-			.json({ message: 'Server Error', error: error.message });
+		res.status(500).json({ message: 'Server Error', error: error.message });
 	}
 };
 

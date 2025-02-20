@@ -4,6 +4,44 @@ import Validator from '../../../Libs/Middleware/Validator';
 const spaceRule = [
 	body('name').notEmpty().withMessage('Name must not be empty'),
 	body('description').notEmpty().withMessage('Description must not be empty'),
+	body('type')
+		.notEmpty()
+		.withMessage('Type must not be empty')
+		.isIn(['space', 'service'])
+		.default('space'),
+	body('parent_space_id')
+		.optional()
+		.isInt()
+		.withMessage('Parent space id must be a number'),
+	body('hero_video_id')
+		.optional()
+		.isInt()
+		.withMessage('Hero video id must be a number'),
+	body('headline')
+		.optional()
+		.isString()
+		.withMessage('Headline must be a string'),
+	body('sub_title')
+		.optional()
+		.isString()
+		.withMessage('Description must be a string'),
+	body('spotlight_image_id')
+		.optional()
+		.isInt()
+		.withMessage('Spotlight image id must be a number'),
+	body('spotlight_headline')
+		.optional()
+		.isString()
+		.withMessage('Spotlight headline must be a string'),
+	body('spotlight_description')
+		.optional()
+		.isString()
+		.withMessage('Spotlight description must be a string'),
+	body('images').optional().isArray().withMessage('Images must be an array'),
+	body('images.*.id')
+		.optional()
+		.isInt()
+		.withMessage('Image id must be a number'),
 ];
 const createSpaceRule = [
 	...spaceRule,

@@ -7,8 +7,8 @@ export const indexModel = async () => {
 	});
 };
 
-export const createSpace = async (data: Prisma.SpaceCreateInput) => {
-	const { packages = [], ...result } = data;
+export const createSpace = async (data: Prisma.SpaceCreateInput | any) => {
+	const { packages, ...result } = data;
 
 	return await prisma.space.create({
 		data: {
@@ -38,7 +38,39 @@ export const createSpace = async (data: Prisma.SpaceCreateInput) => {
 };
 
 export const createSpaceOnly = async (data: any) => {
-	return await prisma.space.create({ data });
+	const {
+		hero_video_id,
+		spotlight_image_id,
+		images,
+		parent_space_id,
+		...result
+	} = data;
+	return await prisma.space.create({
+		data: {
+			hero_video: hero_video_id
+				? { connect: { id: hero_video_id } }
+				: undefined,
+			spotlight_image: spotlight_image_id
+				? { connect: { id: spotlight_image_id } }
+				: undefined,
+			parent_space: parent_space_id
+				? { connect: { id: parent_space_id } }
+				: undefined,
+			images: images ? { create: images } : undefined,
+			...result,
+		},
+		include: {
+			packages: {
+				include: {
+					package_offer: true,
+				},
+			},
+			hero_video: true,
+			spotlight_image: true,
+			parent_space: true,
+			images: true,
+		},
+	});
 };
 
 export const updateSpace = async (

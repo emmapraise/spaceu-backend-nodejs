@@ -7,8 +7,6 @@ export const createPackageHandler = async (req: Request, res: Response) => {
 		const result = await createPackage(validatedRecord);
 		res.json(result).status(200);
 	} catch (error: any) {
-		return res
-			.status(500)
-			.json({ message: 'Server Error', error: error.message });
+		res.status(500).json({ message: 'Server Error', error: error.message });
 	}
 };
