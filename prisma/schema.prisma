@@ -14,68 +14,124 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   name            String
-  email           String   @unique
+  email           String        @unique
   phone_number    String
   whatsapp_number String?
   password        String?
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  reservation     Reservation[]
 
   @@map("users")
 }
 
 model Image {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   url         String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  hero_images Space[]  @relation("hero_images")
-  images      Space[]  @relation("images")
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  hero_images Space[]   @relation("hero_images")
+  images      Space[]   @relation("images")
+  service     Service[]
+  space       Space[]
 
   @@map("images")
 }
 
 model Space {
-  id              Int     @id @default(autoincrement())
-  name            String
-  headline        String?
-  description     String?
-  hero_image_id   Int?
-  hero_images     Image?  @relation(name: "hero_images", fields: [hero_image_id], references: [id])
-  image_id        Int?
-  images          Image?  @relation(name: "images", fields: [image_id], references: [id])
-
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  packages    Package[]
+  id            Int           @id @default(autoincrement())
+  name          String
+  headline      String?
+  description   String?
+  hero_image_id Int?
+  hero_images   Image?        @relation(name: "hero_images", fields: [hero_image_id], references: [id])
+  images        Image[]       @relation(name: "images")
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+  packages      Package[]
+  service       Service[]
+  Image         Image?        @relation(fields: [imageId], references: [id])
+  imageId       Int?
+  reservation   Reservation[]
 
   @@map("spaces")
 }
 
 model Package {
-  id           Int            @id @default(autoincrement())
-  name         String
-  description  String?
-  price        Float
-  space_id     Int
-  space        Space          @relation(fields: [space_id], references: [id])
-  type         String
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Float
+  space_id      Int?
+  space         Space?         @relation(fields: [space_id], references: [id])
+  service_id    Int?
+  service       Service?       @relation(fields: [service_id], references: [id])
+  type          String
+  duration      Int?
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
   package_offer PackageOffer[]
+  reservation   Reservation[]
 
   @@map("packages")
 }
 
 model PackageOffer {
-  id               Int      @id @default(autoincrement())
-  offer            String
-  package_id       Int
-  package          Package  @relation(fields: [package_id], references: [id])
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  offer      String
+  package_id Int
+  package    Package  @relation(fields: [package_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("package_offers")
+}
+
+model Service {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  space_id    Int?
+  space       Space?    @relation(fields: [space_id], references: [id])
+  images      Image[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  package     Package[]
+
+  @@map("services")
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  space_id   Int
+  package_id Int?
+  user       User     @relation(fields: [user_id], references: [id])
+  space      Space    @relation(fields: [space_id], references: [id])
+  package    Package?  @relation(fields: [package_id], references: [id])
+  price      Float
+  date       DateTime @db.Date
+  time       DateTime @db.Time
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  booking_id Int?
+  duration   Int
+  booking    Booking? @relation(fields: [booking_id], references: [id])
+
+  @@map("reservations")
+}
+
+model Booking {
+  id             Int           @id @default(autoincrement())
+  reservation_id Int
+  total_amount   Float
+  has_paid       Boolean  @default(false)
+  references     String?
+  reservation    Reservation[]
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+
+  @@map("bookings")
 }
