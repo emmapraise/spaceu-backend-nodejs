@@ -31,6 +31,10 @@ model Media {
   id         Int      @id @default(autoincrement())
   url        String
   type       String
+  secure_url String?
+  public_id  String  @unique
+  filename   String
+  folder     String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   hero_video Space[]  @relation("hero_video")
@@ -47,7 +51,7 @@ model Space {
   description           String?
   sub_title             String?
   hero_video_id         Int?
-  hero_video           Media?        @relation(name: "hero_video", fields: [hero_video_id], references: [id])
+  hero_video            Media?        @relation(name: "hero_video", fields: [hero_video_id], references: [id])
   images                Media[]       @relation(name: "images")
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
