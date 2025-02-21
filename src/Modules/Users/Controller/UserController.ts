@@ -4,7 +4,7 @@ import {
 	deleteUser,
 	indexModel,
 	updateUser,
-    findUserById
+	findUserById,
 } from '../Model/UserModel';
 
 export const indexHandler = async (req: Request, res: Response) => {
@@ -20,9 +20,17 @@ export const createHandler = async (req: Request, res: Response) => {
 	try {
 		const data = req.validated();
 		const result = await createUser(data);
-		res.json(result).status(200);
-	} catch (error) {
-		res.status(500).send('Server Error');
+		res
+			.json({
+				message: 'User created successfully',
+				status: true,
+				data: result,
+			})
+			.status(200);
+	} catch (error: any) {
+		res
+			.status(500)
+			.json({ message: 'Server Error', status: false, error: error.message });
 	}
 };
 
@@ -47,12 +55,12 @@ export const deleteHandler = async (req: Request, res: Response) => {
 	}
 };
 
-export const getOneUserHandler = async (req: Request, res:Response) => {
-    try {
-        const { id } = req.validated();
-        const result = await findUserById(parseInt(id));
-        res.json(result).status(200);
-    } catch (error) {
-        res.status(500).send('Server Error');
-    }
-}
+export const getOneUserHandler = async (req: Request, res: Response) => {
+	try {
+		const { id } = req.validated();
+		const result = await findUserById(parseInt(id));
+		res.json(result).status(200);
+	} catch (error) {
+		res.status(500).send('Server Error');
+	}
+};
