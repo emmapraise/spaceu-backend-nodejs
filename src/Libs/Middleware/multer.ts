@@ -3,7 +3,6 @@ import path from 'path';
 
 const storage = multer.diskStorage({
 	filename: (req, file, cb) => {
-        console.log(file)
 		cb(null, `${Date.now()}-${file.originalname}`);
 	},
 });
@@ -15,6 +14,8 @@ const upload = multer({
 		const extname = allowedTypes.test(
 			path.extname(file.originalname).toLowerCase()
 		);
+        console.log(file.originalname);
+
 		const mimetype = allowedTypes.test(file.mimetype);
 
 		if (extname && mimetype) {
