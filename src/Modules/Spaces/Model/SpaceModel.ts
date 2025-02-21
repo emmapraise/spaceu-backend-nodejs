@@ -3,7 +3,13 @@ import prisma from '../../../../prisma/db';
 
 export const indexModel = async () => {
 	return await prisma.space.findMany({
-		include: { packages: { include: { package_offer: true } } },
+		include: {
+			packages: { include: { package_offer: true } },
+			hero_video: true,
+			spotlight_image: true,
+			parent_space: true,
+			images: true,
+		},
 	});
 };
 
@@ -87,6 +93,22 @@ export const deleteSpace = async (id: number) => {
 export const findSpaceById = async (id: number) => {
 	return await prisma.space.findUnique({
 		where: { id },
-		include: { packages: { include: { package_offer: true } } },
+		include: {
+			packages: { include: { package_offer: true } },
+			hero_video: true,
+			spotlight_image: true,
+			parent_space: true,
+			images: true,
+		},
+	});
+};
+
+export const dropDownModel = async () => {
+	return await prisma.space.findMany({
+		select: {
+			id: true,
+			name: true,
+			type: true,
+		},
 	});
 };
