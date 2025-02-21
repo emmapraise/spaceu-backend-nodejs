@@ -14,14 +14,115 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-  phone_number String
+  id              Int       @id @default(autoincrement())
+  name            String
+  email           String    @unique
+  phone_number    String
   whatsapp_number String?
-  password String?
+  password        String?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  booking         Booking[]
+
+  @@map("users")
+}
+
+model Media {
+  id         Int      @id @default(autoincrement())
+  url        String
+  type       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  hero_video Space[]  @relation("hero_video")
+  images     Space[]  @relation("images")
+  space      Space[]
+
+  @@map("media")
+}
+
+model Space {
+  id                    Int           @id @default(autoincrement())
+  name                  String
+  headline              String?
+  description           String?
+  sub_title             String?
+  hero_video_id         Int?
+  hero_video           Media?        @relation(name: "hero_video", fields: [hero_video_id], references: [id])
+  images                Media[]       @relation(name: "images")
+  created_at            DateTime      @default(now())
+  updated_at            DateTime      @updatedAt
+  packages              Package[]
+  spotlight_image       Media?        @relation(fields: [spotlight_image_id], references: [id])
+  spotlight_image_id    Int?
+  spotlight_headline    String?
+  spotlight_description String?
+  parent_space_id       Int?
+  parent_space          Space?        @relation(name: "sub_spaces", fields: [parent_space_id], references: [id])
+  sub_spaces            Space[]       @relation("sub_spaces")
+  type                  String        @default("space")
+  reservation           Reservation[]
+
+  @@map("spaces")
+}
+
+model Package {
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Float
+  space_id      Int?
+  space         Space?         @relation(fields: [space_id], references: [id])
+  type          String
+  duration      Int?
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  package_offer PackageOffer[]
+  reservation   Reservation[]
+
+  @@map("packages")
+}
+
+model PackageOffer {
+  id         Int      @id @default(autoincrement())
+  offer      String
+  package_id Int
+  package    Package  @relation(fields: [package_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("users")
+  @@map("package_offers")
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  space_id   Int
+  package_id Int?
+  space      Space    @relation(fields: [space_id], references: [id])
+  package    Package? @relation(fields: [package_id], references: [id])
+  price      Float
+  date       DateTime @db.Date
+  time       DateTime @db.Time
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  booking_id Int?
+  duration   Int
+  booking    Booking? @relation(fields: [booking_id], references: [id])
+  is_booked  Boolean  @default(false)
+
+  @@map("reservations")
+}
+
+model Booking {
+  id             Int           @id @default(autoincrement())
+  reservation_id Int
+  total_amount   Float
+  has_paid       Boolean       @default(false)
+  references     String?
+  user_id        Int
+  user           User          @relation(fields: [user_id], references: [id])
+  reservations   Reservation[]
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+
+  @@map("bookings")
 }
