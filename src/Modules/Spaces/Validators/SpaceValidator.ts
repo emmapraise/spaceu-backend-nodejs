@@ -77,5 +77,9 @@ const createSpaceRule = [
 	// 	.withMessage('Offer must not be empty'),
 ];
 
+const spaceIdRule = [param('id').isInt().withMessage('Id must be a number')];
+
 export const createSpaceRequest = Validator(createSpaceRule);
 export const createSpaceOnlyRequest = Validator(spaceRule);
+export const getSpaceRequest = Validator(spaceIdRule);
+export const updateSpaceRequest = Validator([...spaceIdRule, ...spaceRule]);

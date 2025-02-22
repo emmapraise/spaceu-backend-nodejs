@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import UserRoutes from './Modules/Users/Routes/UserRoutes';
 import SpaceRoutes from './Modules/Spaces/Routes/SpaceRoutes';
 import MediaRoutes from './Modules/Media/Routes/MediaRoutes';
+import ReservationRoutes from './Modules/Bookings/Routes/ReservationRoutes';
 
 const app = express();
 app.use(express.json());
@@ -20,5 +21,6 @@ app.get('/', (req, res) => {
 app.use('/api/users', UserRoutes);
 app.use('/api/spaces', SpaceRoutes);
 app.use('/api/media', MediaRoutes);
+app.use('/api/reservations', ReservationRoutes);
 
 export default app;
