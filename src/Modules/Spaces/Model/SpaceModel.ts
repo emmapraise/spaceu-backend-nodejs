@@ -58,12 +58,22 @@ export const createSpaceOnly = async (data: any) => {
 		include: {
 			packages: {
 				include: {
-					package_offer: true,
+					package_offer: {
+						select: {
+							id: true,
+							offer: true,
+						},
+					},
 				},
 			},
-			spotlight_image: true,
+			spotlight_image: { select: { id: true, url: true } },
 			parent_space: true,
-			images: true,
+			images: {
+				select: {
+					id: true,
+					url: true,
+				},
+			},
 		},
 	});
 };
@@ -83,10 +93,24 @@ export const findSpaceById = async (id: number) => {
 	return await prisma.space.findUnique({
 		where: { id },
 		include: {
-			packages: { include: { package_offer: true } },
-			spotlight_image: true,
+			packages: {
+				include: {
+					package_offer: {
+						select: {
+							id: true,
+							offer: true,
+						},
+					},
+				},
+			},
+			spotlight_image: { select: { id: true, url: true } },
 			parent_space: true,
-			images: true,
+			images: {
+				select: {
+					id: true,
+					url: true,
+				},
+			},
 		},
 	});
 };
