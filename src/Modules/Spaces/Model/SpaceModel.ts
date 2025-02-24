@@ -5,7 +5,6 @@ export const indexModel = async () => {
 	return await prisma.space.findMany({
 		include: {
 			packages: { include: { package_offer: true } },
-			hero_video: true,
 			spotlight_image: true,
 			parent_space: true,
 			images: true,
@@ -44,18 +43,9 @@ export const createSpace = async (data: Prisma.SpaceCreateInput | any) => {
 };
 
 export const createSpaceOnly = async (data: any) => {
-	const {
-		hero_video_id,
-		spotlight_image_id,
-		images,
-		parent_space_id,
-		...result
-	} = data;
+	const { spotlight_image_id, images, parent_space_id, ...result } = data;
 	return await prisma.space.create({
 		data: {
-			hero_video: hero_video_id
-				? { connect: { id: hero_video_id } }
-				: undefined,
 			spotlight_image: spotlight_image_id
 				? { connect: { id: spotlight_image_id } }
 				: undefined,
@@ -71,7 +61,6 @@ export const createSpaceOnly = async (data: any) => {
 					package_offer: true,
 				},
 			},
-			hero_video: true,
 			spotlight_image: true,
 			parent_space: true,
 			images: true,
@@ -95,7 +84,6 @@ export const findSpaceById = async (id: number) => {
 		where: { id },
 		include: {
 			packages: { include: { package_offer: true } },
-			hero_video: true,
 			spotlight_image: true,
 			parent_space: true,
 			images: true,

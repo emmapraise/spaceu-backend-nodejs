@@ -2,7 +2,7 @@ import { body, param, query } from 'express-validator';
 import Validator from '../../../Libs/Middleware/Validator';
 
 const packageRule = [
-	param('space_id').isInt().notEmpty().withMessage('space_id must not be empty'),
+	param('id').isInt().notEmpty().withMessage('space_id must not be empty'),
 	body('name').notEmpty().withMessage('Name must not be empty'),
 	body('description')
 		.optional()

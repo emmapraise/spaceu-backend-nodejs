@@ -23,6 +23,6 @@ router.get('/:id', getSpaceRequest, getSpaceHandler);
 router.post('/all', createSpaceRequest, createSpaceHandler);
 router.post('/', createSpaceOnlyRequest, createSpaceOnlyHandler);
 
-router.post('/:space_id/packages', packageRequest, createPackageHandler);
+router.post('/:id/packages', packageRequest, createPackageHandler);
 
 export default router;
