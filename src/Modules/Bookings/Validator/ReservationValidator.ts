@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+import { body, param, query } from 'express-validator';
 import Validator, { packageExists, spaceExists } from '../../../Libs/Middleware/Validator';
 import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
 
@@ -37,7 +37,13 @@ const reservationRule = [
 		.withMessage('Price must be a number'),
 ];
 
+const getReservationRule = [
+	query('space_id').notEmpty().custom(spaceExists),
+	query('date').notEmpty().isISO8601(),
+];
+
 export const createReservationRequest = Validator(reservationRule);
 export const spaceIdRequest = Validator([
 	param('space_id').isInt().withMessage('Space id must be a number'),
 ]);
+export const getReservationRequest = Validator(getReservationRule);
