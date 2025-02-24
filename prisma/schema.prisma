@@ -37,7 +37,6 @@ model Media {
   folder     String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  hero_video Space[]  @relation("hero_video")
   images     Space[]  @relation("images")
   space      Space[]
 
@@ -50,8 +49,7 @@ model Space {
   headline              String?
   description           String?
   sub_title             String?
-  hero_video_id         Int?
-  hero_video            Media?        @relation(name: "hero_video", fields: [hero_video_id], references: [id])
+  hero_video_url         String?
   images                Media[]       @relation(name: "images")
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
