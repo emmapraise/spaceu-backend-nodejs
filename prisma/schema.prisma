@@ -103,7 +103,8 @@ model Reservation {
   package    Package? @relation(fields: [package_id], references: [id])
   price      Float
   date       DateTime @db.Date
-  time       DateTime 
+  start_time  String
+  end_time    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   booking_id Int?

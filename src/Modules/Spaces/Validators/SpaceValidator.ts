@@ -1,5 +1,5 @@
 import { body, param, query } from 'express-validator';
-import Validator from '../../../Libs/Middleware/Validator';
+import Validator, { mediaExist } from '../../../Libs/Middleware/Validator';
 
 const spaceRule = [
 	body('name').notEmpty().withMessage('Name must not be empty'),
@@ -28,7 +28,7 @@ const spaceRule = [
 	body('spotlight_image_id')
 		.optional()
 		.isInt()
-		.withMessage('Spotlight image id must be a number'),
+		.withMessage('Spotlight image id must be a number').custom(mediaExist),
 	body('spotlight_headline')
 		.optional()
 		.isString()
@@ -41,7 +41,7 @@ const spaceRule = [
 	body('images.*.id')
 		.optional()
 		.isInt()
-		.withMessage('Image id must be a number'),
+		.withMessage('Image id must be a number').custom(mediaExist),
 ];
 const createSpaceRule = [
 	...spaceRule,

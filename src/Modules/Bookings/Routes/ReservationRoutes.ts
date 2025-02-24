@@ -2,13 +2,15 @@ import { Router } from 'express';
 import {
 	createReservationHandler,
 	getReservationsHandler,
-	getReservationHandler,
+	// getReservationHandler,
 	getReservationBySpaceIdHandler,
 	getReservationByBookingIdHandler,
+	getReservationBySpaceAndDateHandler,
 } from '../Controller/ReservationController';
 import {
 	createReservationRequest,
 	spaceIdRequest,
+	getReservationRequest,
 } from '../Validator/ReservationValidator';
 
 const router = Router();
@@ -22,5 +24,11 @@ router.get(
 	getReservationByBookingIdHandler
 );
 router.post('/', createReservationRequest, createReservationHandler);
+
+router.get(
+	'/get-reserved',
+	getReservationRequest,
+	getReservationBySpaceAndDateHandler
+);
 
 export default router;
