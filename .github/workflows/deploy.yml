@@ -17,11 +17,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Compile TypeScript
+        run: npx tsc
+
       - name: Upload files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./ # Change this if your files are inside a subdirectory
+          local-dir: ./dist/ # Change this if your files are inside a subdirectory
           server-dir: ./ #/public_html/ # Change this based on your cPanel setup
