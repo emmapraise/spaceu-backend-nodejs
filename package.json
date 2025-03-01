@@ -7,6 +7,8 @@
     "build": "tsc",
     "start": "ts-node-dev src/index.ts",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
     "cpanel": "source /home/cimtechd/nodevenv/public_html/emmapraise.cimtechdevices.com/api/20/bin/activate && cd /home/cimtechd/public_html/emmapraise.cimtechdevices.com/api"
   },
   "keywords": [],
