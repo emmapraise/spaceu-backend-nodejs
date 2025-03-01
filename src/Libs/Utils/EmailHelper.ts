@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 require('dotenv').config();
 
@@ -8,15 +9,17 @@ const emailTemplatePath = path.join(__dirname, '../Templates/booking.html');
 console.log('emails', emailTemplatePath);
 const emailHtml = fs.readFileSync(emailTemplatePath, 'utf8');
 
-const transporter:any = nodemailer.createTransport({
-	host: process.env.SMTP_HOST || " ", 
-	port: process.env.SMTP_PORT, // Use 587 for TLS
-	secure: true, // Use false for port 587 (TLS)
-	auth: {
-		user: process.env.SMTP_USER, // Your cPanel email
-		pass: process.env.SMTP_PASS, // Your email password
-	},
-});
+const transporter: any = nodemailer.createTransport(
+	new SMTPTransport({
+		host: process.env.SMTP_HOST || ' ',
+		port: Number(process.env.SMTP_PORT), // Use 587 for TLS
+		secure: true, // Use false for port 587 (TLS)
+		auth: {
+			user: process.env.SMTP_USER, // Your cPanel email
+			pass: process.env.SMTP_PASS, // Your email password
+		},
+	})
+);
 
 export const sendEmail = async (to: string, subject: string, text: string) => {
 	try {
