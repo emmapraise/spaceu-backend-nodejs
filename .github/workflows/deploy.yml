@@ -26,5 +26,5 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/ # Change this if your files are inside a subdirectory
+          local-dir: ./ # Change this if your files are inside a subdirectory
           server-dir: ./ #/public_html/ # Change this based on your cPanel setup
