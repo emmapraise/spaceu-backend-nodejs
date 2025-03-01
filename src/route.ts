@@ -16,9 +16,11 @@ app
 	.use(cookieParser());
 
 app.get('/', (req, res) => {
+	res.send('Backend is running');
+});
+app.get('/api', (req, res) => {
 	res.send('API is running');
 });
-
 app.use('/api/users', UserRoutes);
 app.use('/api/spaces', SpaceRoutes);
 app.use('/api/media', MediaRoutes);
