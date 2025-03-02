@@ -55,7 +55,12 @@ const Validator = (validations: Array<any>) => {
 };
 
 export const spaceExists = async (value: any, { req }: { req: any }) => {
-	const space = await prisma.space.findFirst(value);
+	console.log(value);
+	const space = await prisma.space.findFirst({
+		where: {
+			id: Number(value),
+		},
+	});
 	if (!space) {
 		throw new Error('Space does not exist');
 	}
@@ -63,7 +68,11 @@ export const spaceExists = async (value: any, { req }: { req: any }) => {
 };
 
 export const mediaExist = async (value: any, { req }: { req: any }) => {
-	const media = await prisma.media.findFirst(value);
+	const media = await prisma.media.findFirst({
+		where: {
+			id: Number(value),
+		},
+	});
 	if (!media) {
 		throw new Error('Media does not exist');
 	}
@@ -71,7 +80,11 @@ export const mediaExist = async (value: any, { req }: { req: any }) => {
 };
 
 export const packageExists = async (value: any, { req }: { req: any }) => {
-	const packageData = await prisma.package.findFirst(value);
+	const packageData = await prisma.package.findFirst({
+		where: {
+			id: Number(value),
+		},
+	});
 	if (!packageData) {
 		throw new Error('Package does not exist');
 	}
@@ -79,7 +92,11 @@ export const packageExists = async (value: any, { req }: { req: any }) => {
 };
 
 export const reservationExists = async (value: any, { req }: { req: any }) => {
-	const reservation = await prisma.reservation.findFirst(value);
+	const reservation = await prisma.reservation.findFirst({
+		where: {
+			id: Number(value),
+		},
+	});
 	if (!reservation) {
 		throw new Error('Reservation does not exist');
 	}
