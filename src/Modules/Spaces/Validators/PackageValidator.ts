@@ -2,7 +2,11 @@ import { body, param, query } from 'express-validator';
 import Validator, { spaceExists } from '../../../Libs/Middleware/Validator';
 
 const packageRule = [
-	param('id').isInt().notEmpty().withMessage('space_id must not be empty').custom(spaceExists),
+	param('id')
+		.isInt()
+		.notEmpty()
+		.withMessage('space_id must not be empty')
+		.custom(spaceExists),
 	body('name').notEmpty().withMessage('Name must not be empty'),
 	body('description')
 		.optional()
@@ -20,6 +24,7 @@ const packageRule = [
 	body('package_offer.*.offer')
 		.notEmpty()
 		.withMessage('Offer must not be empty'),
+	body('duration').notEmpty().isInt().withMessage('Duration must be a number'),
 ];
 
 const updatePackageRule = [
