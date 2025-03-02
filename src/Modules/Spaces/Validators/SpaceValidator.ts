@@ -15,8 +15,8 @@ const spaceRule = [
 		.withMessage('Parent space id must be a number'),
 	body('hero_video_url')
 		.optional()
-		.isString().isURL()
-		.withMessage('Hero video id must be a number'),
+		.isString()
+		.withMessage('Hero video url must be a string'),
 	body('headline')
 		.optional()
 		.isString()
