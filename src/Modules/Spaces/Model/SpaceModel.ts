@@ -52,7 +52,13 @@ export const createSpaceOnly = async (data: any) => {
 			parent_space: parent_space_id
 				? { connect: { id: parent_space_id } }
 				: undefined,
-			images: images ? { create: images } : undefined,
+			images: images
+				? {
+						connect: images.map((imageId: any) => ({
+							id: parseInt(imageId.id), 
+						})),
+				  }
+				: undefined,
 			...result,
 		},
 		include: {
