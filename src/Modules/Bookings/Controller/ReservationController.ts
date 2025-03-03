@@ -7,12 +7,32 @@ import {
 	getReservedSpaceModel,
 	getReservationBySpaceId,
 	getAnonymousReservationsModel,
+	reservationExistsModel,
 } from '../Model/ReservationModel';
+import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
+import {
+	convertMinutesToTime,
+	formatDate,
+} from '../../../Libs/Utils/ReservationHelper';
 
 export const createReservationHandler = async (req: Request, res: Response) => {
 	try {
 		const validatedRecord = req.validated();
 		const anonymousId: any = req.anonymous_id;
+		const reservationExists = await reservationExistsModel(validatedRecord);
+
+		if (reservationExists) {
+			return res
+				.json({
+					status: false,
+					message:
+						`${reservationExists.space.name} is already reserved on ` +
+						`${formatDate(reservationExists.date)} from ${convertMinutesToTime(
+							reservationExists.start_time
+						)} to ${convertMinutesToTime(reservationExists.end_time)}`,
+				})
+				.status(409);
+		}
 
 		const result = await createReservation(validatedRecord, anonymousId);
 		res

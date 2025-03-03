@@ -16,7 +16,7 @@ export const generateAnonymousId = (
 		const anonymousId = uuidv4(); // Generate a unique ID
 		res.cookie('anonymousId', anonymousId, {
 			maxAge: 6 * 60 * 1000,
-		}); // Store in a cookie for 30 days
+		}); 
 		req.anonymous_id = anonymousId;
 	} else {
 		req.anonymous_id = req.cookies.anonymousId;

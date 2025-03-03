@@ -2,7 +2,7 @@ import { body, param, query } from 'express-validator';
 import Validator, { packageExists, spaceExists } from '../../../Libs/Middleware/Validator';
 import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
 
-const allowedTime = Object.values(TimeSlotEnum);
+const allowedTime = Object.keys(TimeSlotEnum);
 
 const reservationRule = [
 	body('id').optional().isInt().withMessage('Id must be a number'),
@@ -16,10 +16,10 @@ const reservationRule = [
 		.withMessage('Start time must not be empty')
 		.isIn(allowedTime)
 		.withMessage('Invalid start time'),
-	body('end_time')
-		.optional()
-		.isIn(allowedTime)
-		.withMessage('End time must not be empty'),
+	// body('end_time')
+	// 	.optional()
+	// 	.isIn(allowedTime)
+	// 	.withMessage('End time must not be empty'),
 	body('date')
 		.notEmpty()
 		.withMessage('Date must not be empty')

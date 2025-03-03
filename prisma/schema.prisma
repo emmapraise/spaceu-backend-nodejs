@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.0.x"]
 }
 
@@ -33,7 +33,7 @@ model Media {
   url        String
   type       String
   secure_url String?
-  public_id  String  @unique
+  public_id  String   @unique
   filename   String
   folder     String?
   created_at DateTime @default(now())
@@ -50,7 +50,7 @@ model Space {
   headline              String?
   description           String?
   sub_title             String?
-  hero_video_url         String?
+  hero_video_url        String?
   images                Media[]       @relation(name: "images")
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
@@ -97,36 +97,36 @@ model PackageOffer {
 }
 
 model Reservation {
-  id         Int      @id @default(autoincrement())
-  space_id   Int
-  package_id Int?
-  space      Space    @relation(fields: [space_id], references: [id])
-  package    Package? @relation(fields: [package_id], references: [id])
-  price      Float
-  date       DateTime @db.Date
-  start_time  String
-  end_time    String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  booking_id Int?
-  duration   Int
+  id           Int      @id @default(autoincrement())
+  space_id     Int
+  package_id   Int?
+  space        Space    @relation(fields: [space_id], references: [id])
+  package      Package? @relation(fields: [package_id], references: [id])
+  price        Float
+  date         DateTime @db.Date
+  start_time   Int?
+  end_time     Int?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  booking_id   Int?
+  duration     Int
   anonymous_id String?
-  booking    Booking? @relation(fields: [booking_id], references: [id])
-  is_booked  Boolean  @default(false)
+  booking      Booking? @relation(fields: [booking_id], references: [id])
+  is_booked    Boolean  @default(false)
 
   @@map("reservations")
 }
 
 model Booking {
-  id             Int           @id @default(autoincrement())
-  total_amount   Float
-  has_paid       Boolean       @default(false)
-  references     String?
-  user_id        Int
-  user           User          @relation(fields: [user_id], references: [id])
-  reservations   Reservation[]
-  created_at     DateTime      @default(now())
-  updated_at     DateTime      @updatedAt
+  id           Int           @id @default(autoincrement())
+  total_amount Float
+  has_paid     Boolean       @default(false)
+  references   String?
+  user_id      Int
+  user         User          @relation(fields: [user_id], references: [id])
+  reservations Reservation[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
 
   @@map("bookings")
 }
