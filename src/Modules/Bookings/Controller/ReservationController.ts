@@ -6,12 +6,35 @@ import {
 	getResverationByBookingId,
 	getReservedSpaceModel,
 	getReservationBySpaceId,
+	getAnonymousReservationsModel,
+	reservationExistsModel,
 } from '../Model/ReservationModel';
+import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
+import {
+	convertMinutesToTime,
+	formatDate,
+} from '../../../Libs/Utils/ReservationHelper';
 
 export const createReservationHandler = async (req: Request, res: Response) => {
 	try {
 		const validatedRecord = req.validated();
-		const result = await createReservation(validatedRecord);
+		const anonymousId: any = req.anonymous_id;
+		const reservationExists = await reservationExistsModel(validatedRecord);
+
+		if (reservationExists) {
+			 res
+				.json({
+					status: false,
+					message:
+						`${reservationExists.space.name} is already reserved on ` +
+						`${formatDate(reservationExists.date)} from ${convertMinutesToTime(
+							reservationExists.start_time
+						)} to ${convertMinutesToTime(reservationExists.end_time)}`,
+				})
+				.status(409);
+		}
+
+		const result = await createReservation(validatedRecord, anonymousId);
 		res
 			.json({
 				message: 'Created reservation successfully',
@@ -25,8 +48,27 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 };
 
 export const getReservationsHandler = async (req: Request, res: Response) => {
+	console.log(req.anonymous_id);
 	try {
 		const result = await indexModel();
+		res
+			.json({
+				message: 'Got reservation successfully',
+				status: true,
+				data: result,
+			})
+			.status(200);
+	} catch (error) {
+		res.status(500).send('Server Error');
+	}
+};
+
+export const getAnonymousReservationsHandler = async (
+	req: Request,
+	res: Response
+) => {
+	try {
+		const result = await getAnonymousReservationsModel(req.anonymous_id);
 		res
 			.json({
 				message: 'Got reservation successfully',

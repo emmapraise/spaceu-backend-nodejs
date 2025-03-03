@@ -1,15 +1,24 @@
 import { Prisma } from '@prisma/client';
 import prisma from '../../../../prisma/db';
+import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
+import { calculateEndTime } from '../../../Libs/Utils/ReservationHelper';
 
 export const indexModel = async () => {
 	return await prisma.reservation.findMany();
 };
 
-export const createReservation = async (data: any) => {
-	const { package_id, space_id, booking_id, date, ...result } = data;
+export const createReservation = async (data: any, anonymousId: string) => {
+	const {
+		package_id,
+		space_id,
+		booking_id,
+		date,
+		...result
+	} = data;
 	return await prisma.reservation.create({
 		data: {
 			...result,
+			anonymous_id: anonymousId,
 			date: new Date(date),
 			package: package_id ? { connect: { id: package_id } } : undefined,
 			space: space_id ? { connect: { id: space_id } } : undefined,
@@ -70,4 +79,35 @@ export const getReservedSpaceModel = async (data: any) => {
 	});
 };
 
-// export const getReservedTimeSlotModel = async (data: any) => {
+export const getAnonymousReservationsModel = async (anonymousId: any) => {
+	return await prisma.reservation.findMany({
+		where: {
+			anonymous_id: anonymousId,
+		},
+		include: {
+			package: true,
+			space: true,
+			booking: true,
+		},
+	});
+};
+
+export const reservationExistsModel = async (data: any) => {
+	return await prisma.reservation.findFirst({
+		where: {
+			date: new Date(data.date),
+			space_id: parseInt(data.space_id),
+			OR: [
+				{
+					AND: [
+						{ start_time: { lte: data.end_time } }, // Existing start_time is before or at the new end_time
+						{ end_time: { gte: data.start_time } }, // Existing end_time is after or at the new start_time
+					],
+				},
+			],
+		},
+		include:{
+			space:true,
+		}
+	});
+};
