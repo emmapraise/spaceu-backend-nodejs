@@ -6,7 +6,6 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport';
 require('dotenv').config();
 
 const emailTemplatePath = path.join(__dirname, '../Templates/booking.html');
-console.log('emails', emailTemplatePath);
 const emailHtml = fs.readFileSync(emailTemplatePath, 'utf8');
 
 const transporter: any = nodemailer.createTransport(

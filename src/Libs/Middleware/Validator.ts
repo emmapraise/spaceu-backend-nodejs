@@ -55,7 +55,6 @@ const Validator = (validations: Array<any>) => {
 };
 
 export const spaceExists = async (value: any, { req }: { req: any }) => {
-	console.log(value);
 	const space = await prisma.space.findFirst({
 		where: {
 			id: Number(value),

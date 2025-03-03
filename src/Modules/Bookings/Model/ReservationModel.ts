@@ -5,11 +5,12 @@ export const indexModel = async () => {
 	return await prisma.reservation.findMany();
 };
 
-export const createReservation = async (data: any) => {
+export const createReservation = async (data: any, anonymousId:string) => {
 	const { package_id, space_id, booking_id, date, ...result } = data;
 	return await prisma.reservation.create({
 		data: {
 			...result,
+			anonymous_id:anonymousId,
 			date: new Date(date),
 			package: package_id ? { connect: { id: package_id } } : undefined,
 			space: space_id ? { connect: { id: space_id } } : undefined,
@@ -69,5 +70,18 @@ export const getReservedSpaceModel = async (data: any) => {
 		},
 	});
 };
+
+export const getAnonymousReservationsModel = async(anonymousId:any)=> {
+	return await prisma.reservation.findMany({
+        where: {
+            anonymous_id: anonymousId,
+        },
+        include: {
+            package: true,
+            space: true,
+            booking: true,
+        },
+    });
+}
 
 // export const getReservedTimeSlotModel = async (data: any) => {

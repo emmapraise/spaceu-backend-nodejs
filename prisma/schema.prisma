@@ -110,6 +110,7 @@ model Reservation {
   updated_at DateTime @updatedAt
   booking_id Int?
   duration   Int
+  anonymous_id String?
   booking    Booking? @relation(fields: [booking_id], references: [id])
   is_booked  Boolean  @default(false)
 

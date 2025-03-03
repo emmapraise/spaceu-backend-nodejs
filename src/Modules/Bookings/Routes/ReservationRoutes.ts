@@ -6,6 +6,7 @@ import {
 	getReservationBySpaceIdHandler,
 	getReservationByBookingIdHandler,
 	getReservationBySpaceAndDateHandler,
+	getAnonymousReservationsHandler,
 } from '../Controller/ReservationController';
 import {
 	createReservationRequest,
@@ -13,9 +14,11 @@ import {
 	getReservationRequest,
 } from '../Validator/ReservationValidator';
 
+import { generateAnonymousId } from '../../../Libs/Middleware/anonymousSignIn';
+
 const router = Router();
 
-router.get('/', getReservationsHandler);
+router.get('/all', generateAnonymousId, getReservationsHandler);
 
 router.get('/space/:id', spaceIdRequest, getReservationBySpaceIdHandler);
 router.get(
@@ -23,12 +26,19 @@ router.get(
 	spaceIdRequest,
 	getReservationByBookingIdHandler
 );
-router.post('/', createReservationRequest, createReservationHandler);
+router.post(
+	'/',
+	generateAnonymousId,
+	createReservationRequest,
+	createReservationHandler
+);
 
 router.get(
 	'/get-reserved',
 	getReservationRequest,
 	getReservationBySpaceAndDateHandler
 );
+
+router.get('/', generateAnonymousId, getAnonymousReservationsHandler);
 
 export default router;
