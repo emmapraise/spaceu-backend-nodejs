@@ -22,7 +22,7 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 		const reservationExists = await reservationExistsModel(validatedRecord);
 
 		if (reservationExists) {
-			return res
+			 res
 				.json({
 					status: false,
 					message:
