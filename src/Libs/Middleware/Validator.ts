@@ -5,6 +5,8 @@ import {
 	validationResult,
 } from 'express-validator';
 import prisma from '../../../prisma/db';
+import { TimeSlotEnum } from '../Constant/TimeConstant';
+import { calculateEndTime } from '../Utils/ReservationHelper';
 
 declare global {
 	namespace Express {
@@ -101,5 +103,28 @@ export const reservationExists = async (value: any, { req }: { req: any }) => {
 	}
 	return true;
 };
+
+export const startTime = async (value: any, { req }: { req: any }) => {
+	return Number(TimeSlotEnum[value]);
+};
+
+export const startTimeCheck = async (value: any, { req }: { req: any }) => {
+	if (value < TimeSlotEnum._8AM || value >= TimeSlotEnum._6PM){
+        throw new Error('Start time cannot be earlier than 8 AM or later than 6 PM');
+    } 
+    return true;
+}
+
+export const endTime = async (value: any, { req }: { req: any }) => {
+	const { start_time, duration } = req.body;
+	return calculateEndTime(start_time, duration);
+};
+
+export const endTimeCheck = async (value: any, { req }: { req: any }) => {
+	if (value > TimeSlotEnum._6PM || value <= TimeSlotEnum._8AM){
+		throw new Error('End time cannot be earlier than 8 AM or later than 6 PM');
+	} 
+	return true;
+}
 
 export default Validator;

@@ -1,25 +1,37 @@
 import { body, param, query } from 'express-validator';
-import Validator, { packageExists, spaceExists } from '../../../Libs/Middleware/Validator';
+import Validator, {
+	endTime,
+	endTimeCheck,
+	packageExists,
+	spaceExists,
+	startTime,
+	startTimeCheck,
+} from '../../../Libs/Middleware/Validator';
 import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
 
 const allowedTime = Object.keys(TimeSlotEnum);
 
 const reservationRule = [
 	body('id').optional().isInt().withMessage('Id must be a number'),
-	body('space_id').notEmpty().withMessage('Space id must not be empty').custom(spaceExists),
+	body('space_id')
+		.notEmpty()
+		.withMessage('Space id must not be empty')
+		.custom(spaceExists),
 	body('package_id')
 		.optional()
 		.isInt()
-		.withMessage('Package id must be a number').custom(packageExists),
+		.withMessage('Package id must be a number')
+		.custom(packageExists),
 	body('start_time')
 		.notEmpty()
 		.withMessage('Start time must not be empty')
 		.isIn(allowedTime)
-		.withMessage('Invalid start time'),
-	// body('end_time')
-	// 	.optional()
-	// 	.isIn(allowedTime)
-	// 	.withMessage('End time must not be empty'),
+		.withMessage('Invalid start time')
+		.customSanitizer(startTime)
+		.custom(startTimeCheck),
+	body('end_time')
+		.customSanitizer(endTime)
+		.custom(endTimeCheck),
 	body('date')
 		.notEmpty()
 		.withMessage('Date must not be empty')

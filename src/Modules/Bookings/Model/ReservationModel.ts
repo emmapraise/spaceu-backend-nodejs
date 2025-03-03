@@ -13,18 +13,12 @@ export const createReservation = async (data: any, anonymousId: string) => {
 		space_id,
 		booking_id,
 		date,
-		start_time,
-		duration,
 		...result
 	} = data;
-	const startTime = Number(TimeSlotEnum[start_time]);
 	return await prisma.reservation.create({
 		data: {
 			...result,
 			anonymous_id: anonymousId,
-			duration,
-			start_time: startTime,
-			end_time: calculateEndTime(startTime, duration),
 			date: new Date(date),
 			package: package_id ? { connect: { id: package_id } } : undefined,
 			space: space_id ? { connect: { id: space_id } } : undefined,
@@ -99,8 +93,6 @@ export const getAnonymousReservationsModel = async (anonymousId: any) => {
 };
 
 export const reservationExistsModel = async (data: any) => {
-	const { start_time, duration, ...rest } = data;
-	const startTime = Number(TimeSlotEnum[start_time]);
 	return await prisma.reservation.findFirst({
 		where: {
 			date: new Date(data.date),
@@ -108,8 +100,8 @@ export const reservationExistsModel = async (data: any) => {
 			OR: [
 				{
 					AND: [
-						{ start_time: { lte: calculateEndTime(startTime, duration) } }, // Existing start_time is before or at the new end_time
-						{ end_time: { gte: startTime } }, // Existing end_time is after or at the new start_time
+						{ start_time: { lte: data.end_time } }, // Existing start_time is before or at the new end_time
+						{ end_time: { gte: data.start_time } }, // Existing end_time is after or at the new start_time
 					],
 				},
 			],
