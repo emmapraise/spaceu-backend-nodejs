@@ -123,6 +123,7 @@ model Booking {
   has_paid     Boolean       @default(false)
   references   String?
   user_id      Int
+  anonymous_id String?
   user         User          @relation(fields: [user_id], references: [id])
   reservations Reservation[]
   created_at   DateTime      @default(now())

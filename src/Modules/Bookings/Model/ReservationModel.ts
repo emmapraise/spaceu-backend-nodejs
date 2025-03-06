@@ -80,6 +80,7 @@ export const getReservedSpaceModel = async (data: any) => {
 };
 
 export const getAnonymousReservationsModel = async (anonymousId: any) => {
+	 if (!anonymousId) return [];
 	return await prisma.reservation.findMany({
 		where: {
 			anonymous_id: anonymousId,

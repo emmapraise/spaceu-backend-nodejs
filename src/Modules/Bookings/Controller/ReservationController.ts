@@ -32,10 +32,10 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 						)} to ${convertMinutesToTime(reservationExists.end_time)}`,
 				})
 				.status(409);
+				return;
 		}
-
 		const result = await createReservation(validatedRecord, anonymousId);
-		res
+		 res
 			.json({
 				message: 'Created reservation successfully',
 				status: true,
@@ -43,7 +43,7 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 			})
 			.status(201);
 	} catch (error: any) {
-		res.status(500).json({ message: 'Server Error', error: error.message });
+		 res.status(500).json({ message: 'Server Error', error: error.message });
 	}
 };
 
