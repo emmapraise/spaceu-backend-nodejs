@@ -1,5 +1,6 @@
 import { body, param, query } from 'express-validator';
 import Validator, {
+	checkValidDate,
 	endTime,
 	endTimeCheck,
 	packageExists,
@@ -29,14 +30,13 @@ const reservationRule = [
 		.withMessage('Invalid start time')
 		.customSanitizer(startTime)
 		.custom(startTimeCheck),
-	body('end_time')
-		.customSanitizer(endTime)
-		.custom(endTimeCheck),
+	body('end_time').customSanitizer(endTime).custom(endTimeCheck),
 	body('date')
 		.notEmpty()
 		.withMessage('Date must not be empty')
 		.isISO8601()
-		.withMessage('Invalid date format. Use YYYY-MM-DD'),
+		.withMessage('Invalid date format. Use YYYY-MM-DD')
+		.custom(checkValidDate),
 	body('duration')
 		.notEmpty()
 		.withMessage('Status must not be empty')

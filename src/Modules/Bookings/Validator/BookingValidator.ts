@@ -4,9 +4,7 @@ import Validator from '../../../Libs/Middleware/Validator';
 
 const bookingRule = [
 	...userRule,
-	body('total_amount').notEmpty().isFloat(),
-	body('reservations').isArray({ min: 1 }),
-	body('reservations.*.id').notEmpty().isInt(),
+	
 ];
 
 const getBookingRule = [param('id').notEmpty().isInt()];

@@ -6,16 +6,21 @@ export const indexModel = async () => {
 	return await prisma.booking.findMany();
 };
 
-export const createBooking = async (data: any) => {
-	const { total_amount, reservations, ...user } = data;
-
-	const userData = await upsertUserByEmail(user);
+export const createBooking = async (
+	user: any,
+	reservations: any,
+	total_amount: number,
+	anonymous_id: string
+) => {
 	return await prisma.booking.create({
 		data: {
-			user: { connect: { id: userData.id } },
+			user: { connect: { id: user.id } },
 			total_amount,
+			anonymous_id,
 			reservations: {
-				connect: reservations.map((id: number) => ({ id })),
+				connect: reservations.map((reservation: any) => ({
+					id: reservation.id,
+				})),
 			},
 		},
 	});
@@ -38,4 +43,20 @@ export const findBookingById = async (id: number) => {
 
 export const findBookingByUserId = async (userId: number) => {
 	return await prisma.booking.findMany({ where: { user: { id: userId } } });
+};
+
+export const getBookingByAnonymousId = async(anonymous_id:string) => {
+	return prisma.booking.findFirst({
+		where: { anonymous_id },
+        include: {
+            user: true,
+            reservations: {
+                include: {
+                    package: true,
+                    space: true,
+                    booking: true,
+                },
+            },
+        },
+	})
 };

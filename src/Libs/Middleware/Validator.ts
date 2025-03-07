@@ -127,4 +127,15 @@ export const endTimeCheck = async (value: any, { req }: { req: any }) => {
 	return true;
 }
 
+export const checkValidDate = async (value: any, { req }: { req: any }) => {
+	const sleetedDate = new Date(value);
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
+    if (sleetedDate < today) {
+        throw new Error('You cant pick pervious date.');
+    }
+    return true;
+}
+
 export default Validator;
