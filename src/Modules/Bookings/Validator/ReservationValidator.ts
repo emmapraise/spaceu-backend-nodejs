@@ -4,6 +4,7 @@ import Validator, {
 	endTime,
 	endTimeCheck,
 	packageExists,
+	reservationExists,
 	spaceExists,
 	startTime,
 	startTimeCheck,
@@ -13,7 +14,11 @@ import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
 const allowedTime = Object.keys(TimeSlotEnum);
 
 const reservationRule = [
-	body('id').optional().isInt().withMessage('Id must be a number'),
+	body('id')
+		.optional()
+		.isInt()
+		.withMessage('Id must be a number')
+		.custom(reservationExists),
 	body('space_id')
 		.notEmpty()
 		.withMessage('Space id must not be empty')

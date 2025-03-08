@@ -6,9 +6,14 @@ import {
 	findBookingById,
 	findBookingByUserId,
 	getBookingByAnonymousId,
+	bookingConfirmedModel,
 } from '../Model/BookingModel';
 import { getAnonymousReservationsModel } from '../Model/ReservationModel';
 import { upsertUserByEmail } from '../../Users/Model/UserModel';
+import {
+	initializePayment,
+	validatePaymentStatus,
+} from '../../../Libs/Utils/PaymentHelper';
 
 export const createBookingHandler = async (req: Request, res: Response) => {
 	try {
@@ -39,17 +44,32 @@ export const createBookingHandler = async (req: Request, res: Response) => {
 
 		const userData = await upsertUserByEmail(validatedRecord);
 
+		const paymentData = await initializePayment(
+			userData.email,
+			total_amount,
+			reservations
+		);
+
+		if (!paymentData?.data.status) {
+			res.status(400).json({ message: 'Payment failed' });
+			return;
+		}
+
+		const { data } = paymentData.data;
+
 		const result = await createBooking(
 			userData,
 			reservations,
 			total_amount,
-			anonymousId
+			anonymousId,
+			data.reference
 		);
 		res.clearCookie('anonymousId');
 		res
 			.json({
 				message: 'Created booking successfully',
 				status: true,
+				authorization_url: data.authorization_url,
 				data: result,
 			})
 			.status(201);
@@ -106,5 +126,29 @@ export const getBookingsByUserIdHandler = async (
 			.status(200);
 	} catch (error) {
 		res.status(500).send('Server Error');
+	}
+};
+
+export const confirmBookingHandler = async (req: Request, res: Response) => {
+	try {
+		const { reference } = req.validated();
+
+		const paymentData = await validatePaymentStatus(reference);
+
+		if (!paymentData?.data.status) {
+			res.status(400).json({ message: 'Payment failed', status: false });
+			return;
+		}
+
+		const result = await bookingConfirmedModel(reference);
+		res
+			.json({
+				message: 'Confirmed booking successfully',
+				status: true,
+				data: result,
+			})
+			.status(200);
+	} catch (error) {
+		res.status(500).send({message: error, status: false});
 	}
 };

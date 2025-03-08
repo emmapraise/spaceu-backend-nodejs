@@ -109,11 +109,13 @@ export const startTime = async (value: any, { req }: { req: any }) => {
 };
 
 export const startTimeCheck = async (value: any, { req }: { req: any }) => {
-	if (value < TimeSlotEnum._8AM || value >= TimeSlotEnum._6PM){
-        throw new Error('Start time cannot be earlier than 8 AM or later than 6 PM');
-    } 
-    return true;
-}
+	if (value < TimeSlotEnum._8AM || value >= TimeSlotEnum._6PM) {
+		throw new Error(
+			'Start time cannot be earlier than 8 AM or later than 6 PM'
+		);
+	}
+	return true;
+};
 
 export const endTime = async (value: any, { req }: { req: any }) => {
 	const { start_time, duration } = req.body;
@@ -121,21 +123,34 @@ export const endTime = async (value: any, { req }: { req: any }) => {
 };
 
 export const endTimeCheck = async (value: any, { req }: { req: any }) => {
-	if (value > TimeSlotEnum._6PM || value <= TimeSlotEnum._8AM){
+	if (value > TimeSlotEnum._6PM || value <= TimeSlotEnum._8AM) {
 		throw new Error('End time cannot be earlier than 8 AM or later than 6 PM');
-	} 
+	}
 	return true;
-}
+};
 
 export const checkValidDate = async (value: any, { req }: { req: any }) => {
 	const sleetedDate = new Date(value);
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
 
-    if (sleetedDate < today) {
-        throw new Error('You cant pick pervious date.');
-    }
-    return true;
-}
-
+	if (sleetedDate < today) {
+		throw new Error('You cant pick pervious date.');
+	}
+	return true;
+};
+export const checkBookingReference = async (
+	value: any,
+	{ req }: { req: any }
+) => {
+	const booking = await prisma.booking.findFirst({
+		where: {
+			references: value,
+		},
+	});
+	if (!booking) {
+		throw new Error(`Booking with reference ${value} not found`);
+	}
+	return true;
+};
 export default Validator;
