@@ -121,7 +121,8 @@ model Booking {
   id           Int           @id @default(autoincrement())
   total_amount Float
   has_paid     Boolean       @default(false)
-  references   String?
+  references   String?       @unique
+  is_confirmed Boolean       @default(false)
   user_id      Int
   anonymous_id String?
   user         User          @relation(fields: [user_id], references: [id])

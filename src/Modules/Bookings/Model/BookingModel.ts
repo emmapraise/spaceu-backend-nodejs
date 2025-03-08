@@ -10,13 +10,15 @@ export const createBooking = async (
 	user: any,
 	reservations: any,
 	total_amount: number,
-	anonymous_id: string
+	anonymous_id: string,
+	reference: string
 ) => {
 	return await prisma.booking.create({
 		data: {
 			user: { connect: { id: user.id } },
 			total_amount,
 			anonymous_id,
+			references: reference,
 			reservations: {
 				connect: reservations.map((reservation: any) => ({
 					id: reservation.id,
@@ -60,3 +62,21 @@ export const getBookingByAnonymousId = async(anonymous_id:string) => {
         },
 	})
 };
+
+export const bookingConfirmedModel = async(reference:string) => {
+	return await prisma.booking.update({
+		where: { references: reference },
+		data: {
+			has_paid:true,
+			is_confirmed:true,
+			reservations: {
+				updateMany: {
+					where: {},
+					data: {
+						is_booked: true,
+					},
+				},
+			}
+		},
+	});
+}

@@ -15,7 +15,7 @@ export const generateAnonymousId = (
 	if (!req.cookies.anonymousId) {
 		const anonymousId = uuidv4(); // Generate a unique ID
 		res.cookie('anonymousId', anonymousId, {
-			maxAge: 6 * 60 * 1000,
+			maxAge: 30 * 60 * 1000,
 		}); 
 		req.anonymous_id = anonymousId;
 	} else {

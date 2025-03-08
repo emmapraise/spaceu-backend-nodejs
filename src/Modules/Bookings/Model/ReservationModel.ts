@@ -1,30 +1,35 @@
 import { Prisma } from '@prisma/client';
 import prisma from '../../../../prisma/db';
-import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
-import { calculateEndTime } from '../../../Libs/Utils/ReservationHelper';
+
 
 export const indexModel = async () => {
 	return await prisma.reservation.findMany();
 };
 
 export const createReservation = async (data: any, anonymousId: string) => {
-	const {
-		package_id,
-		space_id,
-		booking_id,
-		date,
-		...result
-	} = data;
-	return await prisma.reservation.create({
-		data: {
-			...result,
-			anonymous_id: anonymousId,
-			date: new Date(date),
-			package: package_id ? { connect: { id: package_id } } : undefined,
-			space: space_id ? { connect: { id: space_id } } : undefined,
-		},
-	});
+	const { package_id, space_id, booking_id, date, id, ...result } = data;
+
+	const payloadData = {
+		...result,
+		anonymous_id: anonymousId,
+		date: new Date(date),
+		package: package_id ? { connect: { id: package_id } } : undefined,
+		space: space_id ? { connect: { id: space_id } } : undefined,
+	};
+
+	if (id) {
+		return await prisma.reservation.upsert({
+			where: { id },
+			update: payloadData,
+			create: payloadData,
+		});
+	} else {
+		return await prisma.reservation.create({
+			data: payloadData,
+		});
+	}
 };
+
 
 export const updateReservation = async (
 	id: number,
@@ -80,7 +85,7 @@ export const getReservedSpaceModel = async (data: any) => {
 };
 
 export const getAnonymousReservationsModel = async (anonymousId: any) => {
-	 if (!anonymousId) return [];
+	if (!anonymousId) return [];
 	return await prisma.reservation.findMany({
 		where: {
 			anonymous_id: anonymousId,
@@ -107,8 +112,8 @@ export const reservationExistsModel = async (data: any) => {
 				},
 			],
 		},
-		include:{
-			space:true,
-		}
+		include: {
+			space: true,
+		},
 	});
 };
