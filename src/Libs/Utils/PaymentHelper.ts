@@ -24,7 +24,7 @@ export const initializePayment = async (
 						amount: reservation.price,
 					})),
 				},
-				callback_url: `${frontend_url}/booking-status`,
+				callback_url: `${frontend_url}/booking-confirmation`,
 			},
 			{
 				headers: {
