@@ -11,3 +11,16 @@ export enum TimeSlotEnum {
 	_5PM = 1020, // 5 PM -> 17 * 60
 	_6PM = 1080, // 6 PM -> 18 * 60
 }
+
+export const convertMinutesToTime = (minutes: number): string => {
+	const hours24 = Math.floor(minutes / 60);
+	const minutesPastHour = minutes % 60;
+	const period = hours24 >= 12 ? 'PM' : 'AM';
+
+	let hours12 = hours24 % 12;
+	if (hours12 === 0) hours12 = 12; // Convert 0 to 12 for 12-hour format
+
+	return `${hours12}:${minutesPastHour.toString().padStart(2, '0')} ${period}`;
+};
+
+// console.log(convertMinutesToTime(TimeSlotEnum._12PM))
