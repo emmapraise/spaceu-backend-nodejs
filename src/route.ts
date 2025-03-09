@@ -6,7 +6,7 @@ import SpaceRoutes from './Modules/Spaces/Routes/SpaceRoutes';
 import MediaRoutes from './Modules/Media/Routes/MediaRoutes';
 import ReservationRoutes from './Modules/Bookings/Routes/ReservationRoutes';
 import BookingRoutes from './Modules/Bookings/Routes/BookingRoutes';
-import { sendEmail } from './Libs/Utils/EmailHelper';
+// import { sendEmail } from './Libs/Utils/EmailHelper';
 
 const app = express();
 app.use(express.json());
