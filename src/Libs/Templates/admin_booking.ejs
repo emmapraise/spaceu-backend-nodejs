@@ -52,10 +52,9 @@
 			<h2 style="color: #555; text-align: center; font-size: 24px">
 				Your space at SpaceU is Reserved
 			</h2>
-			<p style="color: #666; font-size: 16px">Dear <%= customerName %>,</p>
+			<p style="color: #666; font-size: 16px">Dear SpaceU Admin,</p>
 			<p style="color: #666; font-size: 16px">
-				Thank you for booking with SpaceU! We're excited to host you and ensure
-				your session is a success.
+				There is a new booking from <%= customerName %>
 			</p>
 			<h3 style="color: #333; font-size: 20px">
 				Here's a summary of your booking:
@@ -128,28 +127,25 @@
 			<% }) %>
 
 			<p style="color: #666; font-size: 16px">
-				To help you keep track of your booking, you can add this event to your
-				calendar
-				<a href="#" style="color: #007bff; text-decoration: none">here</a>.
-			</p>
-			<p style="color: #666; font-size: 16px">
 				Arrive on time to make the most of your session. If you have any
 				questions, please let us know. You can reach us on
-				<a href="tel:07039345671" style="color: #007bff; text-decoration: none"
-					>07039345671</a
+				<a
+					href="tel:<%= contactPhone %>"
+					style="color: #007bff; text-decoration: none"
+					><%= contactPhone %></a
 				>
 				or email us at
 				<a
-					href="mailto:spaceustudios@gmail.com"
+					href="mailto:<%= contactEmail %>"
 					style="color: #007bff; text-decoration: none"
-					>spaceustudios@gmail.com</a
+					><%= contactEmail %></a
 				>.
 			</p>
 			<p style="color: #666; text-align: center; font-size: 16px">
 				Best regards,
 			</p>
 			<p style="color: #666; text-align: center; font-size: 16px">
-				39, Ladipo Kasumu street, off Allen, Ikeja
+				<%= contactAddress %>
 			</p>
 		</div>
 	</body>

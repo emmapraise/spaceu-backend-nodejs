@@ -22,5 +22,30 @@ export const convertMinutesToTime = (minutes: number): string => {
 
 	return `${hours12}:${minutesPastHour.toString().padStart(2, '0')} ${period}`;
 };
+export const formatDate = (isoDate: string): string => {
+	const date = new Date(isoDate);
 
+	// Extract day, month, and year separately to avoid issues with commas
+	const day = date.getUTCDate();
+	const month = date.toLocaleString('en-US', { month: 'long' });
+	const year = date.getUTCFullYear();
+
+	// Function to add ordinal suffix (st, nd, rd, th)
+	const getOrdinalSuffix = (day: number) => {
+		if (day >= 11 && day <= 13) return `${day}th`;
+		switch (day % 10) {
+			case 1:
+				return `${day}st`;
+			case 2:
+				return `${day}nd`;
+			case 3:
+				return `${day}rd`;
+			default:
+				return `${day}th`;
+		}
+	};
+
+	return `${getOrdinalSuffix(day)} ${month}, ${year}`;
+};
+console.log(formatDate('2025-03-08T15:03:51.719Z'));
 // console.log(convertMinutesToTime(TimeSlotEnum._12PM))

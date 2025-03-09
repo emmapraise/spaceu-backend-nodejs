@@ -15,7 +15,10 @@ import {
 	initializePayment,
 	validatePaymentStatus,
 } from '../../../Libs/Utils/PaymentHelper';
-import { sendCustomerBookingEmail } from '../../../Libs/Utils/EmailHelper';
+import {
+	sendAdminsBookingEmail,
+	sendCustomerBookingEmail,
+} from '../../../Libs/Utils/EmailHelper';
 
 export const createBookingHandler = async (req: Request, res: Response) => {
 	try {
@@ -145,11 +148,10 @@ export const confirmBookingHandler = async (req: Request, res: Response) => {
 
 		getBookingByReference(reference)
 			.then((booking) => {
-				// console.log(booking);
-				sendCustomerBookingEmail(booking)
+				sendCustomerBookingEmail(booking);
+				sendAdminsBookingEmail(booking);
 			})
 			.catch((error) => console.error('Error fetching booking:', error));
-
 
 		res.clearCookie('anonymousId');
 		res
