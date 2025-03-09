@@ -7,6 +7,7 @@ import {
 	findBookingByUserId,
 	getBookingByAnonymousId,
 	bookingConfirmedModel,
+	getBookingByReference,
 } from '../Model/BookingModel';
 import { getAnonymousReservationsModel } from '../Model/ReservationModel';
 import { upsertUserByEmail } from '../../Users/Model/UserModel';
@@ -14,6 +15,10 @@ import {
 	initializePayment,
 	validatePaymentStatus,
 } from '../../../Libs/Utils/PaymentHelper';
+import {
+	sendAdminsBookingEmail,
+	sendCustomerBookingEmail,
+} from '../../../Libs/Utils/EmailHelper';
 
 export const createBookingHandler = async (req: Request, res: Response) => {
 	try {
@@ -64,7 +69,6 @@ export const createBookingHandler = async (req: Request, res: Response) => {
 			anonymousId,
 			data.reference
 		);
-		res.clearCookie('anonymousId');
 		res
 			.json({
 				message: 'Created booking successfully',
@@ -141,6 +145,15 @@ export const confirmBookingHandler = async (req: Request, res: Response) => {
 		}
 
 		const result = await bookingConfirmedModel(reference);
+
+		getBookingByReference(reference)
+			.then((booking) => {
+				sendCustomerBookingEmail(booking);
+				sendAdminsBookingEmail(booking);
+			})
+			.catch((error) => console.error('Error fetching booking:', error));
+
+		res.clearCookie('anonymousId');
 		res
 			.json({
 				message: 'Confirmed booking successfully',
@@ -149,6 +162,6 @@ export const confirmBookingHandler = async (req: Request, res: Response) => {
 			})
 			.status(200);
 	} catch (error) {
-		res.status(500).send({message: error, status: false});
+		res.status(500).send({ message: error, status: false });
 	}
 };

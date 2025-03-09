@@ -106,8 +106,8 @@ export const reservationExistsModel = async (data: any) => {
 			OR: [
 				{
 					AND: [
-						{ start_time: { lte: data.end_time } }, // Existing start_time is before or at the new end_time
-						{ end_time: { gte: data.start_time } }, // Existing end_time is after or at the new start_time
+						{ start_time: { lt: data.end_time } }, // Existing start_time is before or at the new end_time
+						{ end_time: { gt: data.start_time } }, // Existing end_time is after or at the new start_time
 					],
 				},
 			],

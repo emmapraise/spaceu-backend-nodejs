@@ -47,28 +47,28 @@ export const findBookingByUserId = async (userId: number) => {
 	return await prisma.booking.findMany({ where: { user: { id: userId } } });
 };
 
-export const getBookingByAnonymousId = async(anonymous_id:string) => {
+export const getBookingByAnonymousId = async (anonymous_id: string) => {
 	return prisma.booking.findFirst({
 		where: { anonymous_id },
-        include: {
-            user: true,
-            reservations: {
-                include: {
-                    package: true,
-                    space: true,
-                    booking: true,
-                },
-            },
-        },
-	})
+		include: {
+			user: true,
+			reservations: {
+				include: {
+					package: true,
+					space: true,
+					booking: true,
+				},
+			},
+		},
+	});
 };
 
-export const bookingConfirmedModel = async(reference:string) => {
+export const bookingConfirmedModel = async (reference: string) => {
 	return await prisma.booking.update({
 		where: { references: reference },
 		data: {
-			has_paid:true,
-			is_confirmed:true,
+			has_paid: true,
+			is_confirmed: true,
 			reservations: {
 				updateMany: {
 					where: {},
@@ -76,7 +76,21 @@ export const bookingConfirmedModel = async(reference:string) => {
 						is_booked: true,
 					},
 				},
-			}
+			},
 		},
 	});
-}
+};
+
+export const getBookingByReference = async (reference: string) => {
+	return await prisma.booking.findFirst({
+		where: { references: reference },
+		include: {
+			user: true,
+			reservations: {
+				include: {
+					space: true,
+				},
+			},
+		},
+	});
+};
