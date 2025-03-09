@@ -4,6 +4,7 @@ import ejs from 'ejs';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { convertMinutesToTime, formatDate } from './ReservationHelper';
+import { generateGoogleCalendarLink } from '../Constant/TimeConstant';
 
 require('dotenv').config();
 const contactEmail = process.env.CONTACT_EMAIL;
@@ -49,6 +50,12 @@ const formatData = (booking: any) => {
 			start_time: convertMinutesToTime(reservation.start_time),
 			end_time: convertMinutesToTime(reservation.end_time),
 			date: formatDate(reservation.date),
+			calender_link: generateGoogleCalendarLink(
+				reservation.space.name,
+				reservation.date,
+				reservation.start_time,
+				reservation.end_time
+			),
 		})),
 	};
 };
