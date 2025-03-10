@@ -23,22 +23,6 @@ const transporter: any = nodemailer.createTransport(
 	})
 );
 
-// export const sendEmail = async (to: string, subject: string, text: string) => {
-// 	try {
-// 		const info = await transporter.sendMail({
-// 			from: '"Space U" <noreply@spaceu.ng>',
-// 			to,
-// 			subject,
-// 			html: emailHtml,
-// 		});
-// 		console.log('Email sent:', info.messageId);
-// 	} catch (error) {
-// 		console.error('Error sending email:', error);
-// 	}
-// };
-
-// sendEmail('tosin.noel@getnada.com', 'Test Email', 'Hello from Node.js!');
-
 const formatData = (booking: any) => {
 	return {
 		customerName: booking.user.name,
@@ -102,3 +86,32 @@ export const sendAdminsBookingEmail = async (booking: any) => {
 		console.error('Error sending email:', error);
 	}
 };
+
+export const sendContactUsEmail = async (data:any) => {
+	const emailTemplatePath = path.join(
+		__dirname,
+		'../Templates/contact_us.ejs'
+	);
+	const emailHtml = fs.readFileSync(emailTemplatePath, 'utf8');
+	const validateData = {
+		...data,
+		contactEmail,
+		contactPhone,
+		contactAddress,
+	};
+
+	const htmlContent = ejs.render(emailHtml, validateData);
+	try {
+		const info = await transporter.sendMail({
+			from: '"Space U" <noreply@spaceu.ng>',
+			to: contactEmail,
+			subject: "New Message",
+			html: htmlContent,
+		});
+		console.log('Contact us Email sent:', info.messageId);
+	} catch (error) {
+		console.error('Error sending email:', error);
+	}
+};
+
+// sendEmail('tosin.noel@getnada.com', 'Test Email', 'Hello from Node.js!');

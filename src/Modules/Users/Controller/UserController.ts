@@ -6,6 +6,7 @@ import {
 	updateUser,
 	findUserById,
 } from '../Model/UserModel';
+import { sendContactUsEmail } from '../../../Libs/Utils/EmailHelper';
 
 export const indexHandler = async (req: Request, res: Response) => {
 	try {
@@ -63,4 +64,15 @@ export const getOneUserHandler = async (req: Request, res: Response) => {
 	} catch (error) {
 		res.status(500).send('Server Error');
 	}
+};
+
+export const contactUsHandler = async (req: Request, res: Response) => {
+	try {
+        // Send email to admin with contact details
+		const validatedData = req.validated();
+		sendContactUsEmail(validatedData)
+        res.json({ message: 'Contact form submitted successfully' }).status(200);
+    } catch (error) {
+        res.status(500).send('Server Error');
+    }
 };

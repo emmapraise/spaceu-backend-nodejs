@@ -143,23 +143,21 @@
 						<!-- Header Section -->
 						<tr>
 							<td class="header" style="padding: 20px; text-align: center">
-								<h1 class="main-title">Your space at SpaceU is Reserved</h1>
+								<h1 class="main-title">New Message from <%= name %></h1>
 							</td>
 						</tr>
 
 						<!-- Body / Content Section -->
 						<tr>
 							<td class="content" style="padding: 20px; color: #333333">
-								<p>Dear <%= customerName %></p>
+								<p>Dear Space U Admin</p>
 								<p>
-									Thank you for booking with SpaceU! We’re excited to host you
-									and ensure your session is a success.
+									You have a new message from <strong><%= name %></strong> (<%= email %>)</p>
 								</p>
-								<p>Here’s a summary of your booking:</p>
-								<% reservations.forEach(reservation => { %>
+								<p>Here’s a summary of the message:</p>
 								<!-- Booking Summary Section  -->
 								<div class="booking-summary" style="margin-top: 10px">
-									<!-- Repeat this box for each space booked / Map Bookings here -->
+									
 									<div
 										class="booking-box"
 										style="
@@ -169,32 +167,14 @@
 											margin-bottom: 10px;
 										"
 									>
-										<p>Space: <strong> <%= reservation.space.name %> </strong></p>
-										<p>Date: <%= reservation.date %> </p>
-										<p>Time:<%= reservation.start_time %> - <%= reservation.end_time %> </p>
-										<p>Duration: <%= reservation.duration %> hour(s)</p>
-										<div class="add-to-calendar">
-                                            <a href="<%= reservation.calender_link %>" target="_blank">
-											<p>Add to Calendar</p>
-											<svg
-												width="20"
-												height="20"
-												viewBox="0 0 20 20"
-												fill="none"
-												xmlns="http://www.w3.org/2000/svg"
-											>
-												<path
-													d="M7.5013 0.835938V2.5026H12.5013V0.835938H14.168V2.5026H17.5013C17.9616 2.5026 18.3346 2.8757 18.3346 3.33594V16.6693C18.3346 17.1295 17.9616 17.5026 17.5013 17.5026H2.5013C2.04107 17.5026 1.66797 17.1295 1.66797 16.6693V3.33594C1.66797 2.8757 2.04107 2.5026 2.5013 2.5026H5.83464V0.835938H7.5013ZM16.668 9.16927H3.33464V15.8359H16.668V9.16927ZM5.83464 4.16927H3.33464V7.5026H16.668V4.16927H14.168V5.83594H12.5013V4.16927H7.5013V5.83594H5.83464V4.16927Z"
-													fill="#662300"
-												/>
-											</svg>
-                                            </a>
-										</div>
+										<p>Name: <strong> <%= name %> </strong></p>
+										<p>Email: <%= email %> </p>
+										<p>Message: <%= message %></p>
+										
 									</div>
 
 									<!-- end map bookings -->
 								</div>
-								<% }) %>
 								<!-- end booking summary -->
 								
 								<p>
