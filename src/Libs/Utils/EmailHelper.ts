@@ -113,5 +113,3 @@ export const sendContactUsEmail = async (data:any) => {
 		console.error('Error sending email:', error);
 	}
 };
-
-// sendEmail('tosin.noel@getnada.com', 'Test Email', 'Hello from Node.js!');
