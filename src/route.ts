@@ -6,7 +6,6 @@ import SpaceRoutes from './Modules/Spaces/Routes/SpaceRoutes';
 import MediaRoutes from './Modules/Media/Routes/MediaRoutes';
 import ReservationRoutes from './Modules/Bookings/Routes/ReservationRoutes';
 import BookingRoutes from './Modules/Bookings/Routes/BookingRoutes';
-// import { sendEmail } from './Libs/Utils/EmailHelper';
 
 const app = express();
 app.use(express.json());
@@ -22,11 +21,6 @@ app.get('/', (req, res) => {
 app.get('/api', (req, res) => {
 	res.send('API is running');
 });
-
-// app.get('/api/mail', (req, res) => {
-// 	sendEmail('tosin.noel@getnada.com', 'Test Email', 'Hello from Node.js!');
-// 	res.send('Email sent');
-// });
 
 app.use('/api/users', UserRoutes);
 app.use('/api/spaces', SpaceRoutes);
