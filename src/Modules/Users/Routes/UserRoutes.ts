@@ -4,9 +4,10 @@ import {
 	deleteHandler,
 	indexHandler,
 	updateHandler,
-    getOneUserHandler
+    getOneUserHandler,
+	contactUsHandler
 } from '../Controller/UserController';
-import { updateUserRequest, userIdRequest, userRequest } from '../Validators/UserValidator';
+import { contactUsRequest, updateUserRequest, userIdRequest, userRequest } from '../Validators/UserValidator';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.post('/', userRequest, createHandler);
 router.get('/:id', userIdRequest, getOneUserHandler);
 router.put('/:id', updateUserRequest, updateHandler);
 router.delete('/:id', userIdRequest, deleteHandler);
+router.post('/contact-us', contactUsRequest, contactUsHandler)
 
 export default router;

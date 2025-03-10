@@ -29,6 +29,13 @@ export const userIdRule = [
 	param('id').isNumeric().withMessage('ID must be a number'),
 ];
 
+const contactUsRule = [
+	body('name').notEmpty().withMessage('Name cant be blank').isString().withMessage('Name must be a string').trim().escape(),
+	body('email').notEmpty().withMessage('Email cant be blank').isEmail().withMessage('Email must be a valid email').trim().escape(),
+    body('message').notEmpty().withMessage('Message cant be blank').isString().trim().escape(),
+]
+
 export const userRequest = Validator(userRule);
 export const userIdRequest = Validator(userIdRule);
 export const updateUserRequest = Validator(userIdRule.concat(userRule));
+export const contactUsRequest = Validator(contactUsRule);
