@@ -130,15 +130,18 @@ export const endTimeCheck = async (value: any, { req }: { req: any }) => {
 };
 
 export const checkValidDate = async (value: any, { req }: { req: any }) => {
-	const sleetedDate = new Date(value);
-	const today = new Date();
-	today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(value);
+    const today = new Date();
 
-	if (sleetedDate < today) {
-		throw new Error('You cant pick pervious date.');
-	}
-	return true;
+    selectedDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+        throw new Error('You can\'t pick a date in the past.');
+    }
+    return true;
 };
+
 export const checkBookingReference = async (
 	value: any,
 	{ req }: { req: any }
