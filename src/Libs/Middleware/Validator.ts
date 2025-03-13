@@ -130,16 +130,19 @@ export const endTimeCheck = async (value: any, { req }: { req: any }) => {
 };
 
 export const checkValidDate = async (value: any, { req }: { req: any }) => {
-    const selectedDate = new Date(value);
-    const today = new Date();
+	const selectedDate = new Date(value);
+	const today = new Date();
 
-    selectedDate.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
+	selectedDate.setHours(0, 0, 0, 0);
+	today.setHours(0, 0, 0, 0);
 
-    if (selectedDate < today) {
-        throw new Error('You can\'t pick a date in the past.');
-    }
-    return true;
+	console.log(selectedDate, 'selectedDate');
+	console.log(today, 'today');
+
+	if (selectedDate < today) {
+		throw new Error("You can't pick a date in the past again.");
+	}
+	return true;
 };
 
 export const checkBookingReference = async (
