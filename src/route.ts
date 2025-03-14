@@ -26,11 +26,6 @@ app.get('/api', (req, res) => {
 	res.send('API is running');
 });
 
-// app.get('/api/mail', (req, res) => {
-// 	sendEmail('tosin.noel@getnada.com', 'Test Email', 'Hello from Node.js!');
-// 	res.send('Email sent');
-// });
-
 app.use('/api/users', UserRoutes);
 app.use('/api/spaces', SpaceRoutes);
 app.use('/api/media', MediaRoutes);
