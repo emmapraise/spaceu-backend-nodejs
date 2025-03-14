@@ -9,14 +9,30 @@ import BookingRoutes from './Modules/Bookings/Routes/BookingRoutes';
 // import { sendEmail } from './Libs/Utils/EmailHelper';
 require('dotenv').config();
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:8080';
+const allowedOrigins =
+	(process.env.ALLOWED_ORIGINS || 'http://localhost:8080').split(',');
 
 const app = express();
 app.use(express.json());
 
 app
 	.use(express.static(__dirname + '/public'))
-	.use(cors({ credentials: true, origin: FRONTEND_URL}))
+	.use(
+		cors({
+			origin: (origin, callback) => {
+				// Allow requests with no origin (e.g., mobile apps, curl requests)
+				if (!origin) return callback(null, true);
+
+				// Check if the origin is in the allowed list
+				if (allowedOrigins.includes(origin)) {
+					return callback(null, true);
+				} else {
+					return callback(new Error('Not allowed by CORS'));
+				}
+			},
+			credentials: true, // Allow cookies
+		})
+	)
 	.use(cookieParser());
 
 app.get('/', (req, res) => {

@@ -19,6 +19,7 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 	try {
 		const validatedRecord = req.validated();
 		const anonymousId: any = req.anonymous_id;
+		console.log("anonId: " + anonymousId);
 		const reservationExists = await reservationExistsModel(validatedRecord);
 
 		if (reservationExists) {
