@@ -7,13 +7,16 @@ import MediaRoutes from './Modules/Media/Routes/MediaRoutes';
 import ReservationRoutes from './Modules/Bookings/Routes/ReservationRoutes';
 import BookingRoutes from './Modules/Bookings/Routes/BookingRoutes';
 // import { sendEmail } from './Libs/Utils/EmailHelper';
+require('dotenv').config();
+
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:8080';
 
 const app = express();
 app.use(express.json());
 
 app
 	.use(express.static(__dirname + '/public'))
-	.use(cors())
+	.use(cors({ credentials: true, origin: FRONTEND_URL}))
 	.use(cookieParser());
 
 app.get('/', (req, res) => {
