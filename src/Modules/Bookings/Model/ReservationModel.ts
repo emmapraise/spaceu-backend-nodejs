@@ -1,7 +1,6 @@
 import { Prisma } from '@prisma/client';
 import prisma from '../../../../prisma/db';
 
-
 export const indexModel = async () => {
 	return await prisma.reservation.findMany();
 };
@@ -29,7 +28,6 @@ export const createReservation = async (data: any, anonymousId: string) => {
 		});
 	}
 };
-
 
 export const updateReservation = async (
 	id: number,
@@ -114,6 +112,17 @@ export const reservationExistsModel = async (data: any) => {
 		},
 		include: {
 			space: true,
+		},
+	});
+};
+
+export const deleteReservationCronJob = async () => {
+	const halfHourAgo = new Date(new Date().getTime() - 30 * 60 * 1000);
+
+	return await prisma.reservation.deleteMany({
+		where: {
+			updated_at: { lte: halfHourAgo },
+			booking_id: null,
 		},
 	});
 };
