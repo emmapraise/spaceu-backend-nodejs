@@ -16,9 +16,9 @@ export const generateAnonymousId = (
 		const anonymousId = uuidv4(); // Generate a unique ID
 		res.cookie('anonymousId', anonymousId, {
 			maxAge: 30 * 60 * 1000,
-			secure: true, // Required for HTTPS
+			// secure: true, // Required for HTTPS
 			sameSite: 'none', // Required for cross-origin requests
-			domain: '.example.com', // Replace with your parent domain
+			// domain: '.example.com', // Replace with your parent domain
 			httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
 		}); 
 		req.anonymous_id = anonymousId;
