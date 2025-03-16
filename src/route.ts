@@ -6,7 +6,7 @@ import SpaceRoutes from './Modules/Spaces/Routes/SpaceRoutes';
 import MediaRoutes from './Modules/Media/Routes/MediaRoutes';
 import ReservationRoutes from './Modules/Bookings/Routes/ReservationRoutes';
 import BookingRoutes from './Modules/Bookings/Routes/BookingRoutes';
-// import { sendEmail } from './Libs/Utils/EmailHelper';
+import { reservationCron } from './Libs/Utils/CronHelper';
 require('dotenv').config();
 
 const allowedOrigins =
@@ -34,6 +34,8 @@ app
 		})
 	)
 	.use(cookieParser());
+
+reservationCron;
 
 app.get('/', (req, res) => {
 	res.send('Backend is running');

@@ -20,9 +20,9 @@ export const userRule = [
 		.notEmpty()
 		.withMessage('Phone number must be at least 11 characters long'),
 	body('whatsapp_number')
+		.optional()
 		.isLength({ min: 11 })
-		.withMessage('Phone number must be at least 11 characters long')
-		.optional(),
+		.withMessage('Phone number must be at least 11 characters long'),
 ];
 
 export const userIdRule = [
