@@ -6,6 +6,7 @@ import {
 	findSpaceById,
 	dropDownModel,
 } from '../Model/SpaceModel';
+import logger from '../../../Libs/Utils/logger';
 
 export const createSpaceHandler = async (req: Request, res: Response) => {
 	try {
@@ -37,9 +38,10 @@ export const createSpaceOnlyHandler = async (req: Request, res: Response) => {
 export const getSpacesHandler = async (req: Request, res: Response) => {
 	try {
 		const result = await indexModel();
+		logger.info("spaces", result)
 		res
 			.json({
-				messgae: 'Got space successfully',
+				message: 'Got space successfully',
 				status: true,
 				data: result,
 			})
@@ -55,7 +57,7 @@ export const getSpaceHandler = async (req: Request, res: Response) => {
 		const result = await findSpaceById(parseInt(id));
 		res
 			.json({
-				messgae: 'Got space successfully',
+				message: 'Got space successfully',
 				status: true,
 				data: result,
 			})
@@ -70,7 +72,7 @@ export const dropDownHandler = async (req: Request, res: Response) => {
 		const result = await dropDownModel();
 		res
 			.json({
-				messgae: 'Got space successfully',
+				message: 'Got space successfully',
 				status: true,
 				data: result,
 			})
