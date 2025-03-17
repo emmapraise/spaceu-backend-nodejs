@@ -38,7 +38,6 @@ export const createSpaceOnlyHandler = async (req: Request, res: Response) => {
 export const getSpacesHandler = async (req: Request, res: Response) => {
 	try {
 		const result = await indexModel();
-		logger.info("spaces", result)
 		res
 			.json({
 				message: 'Got space successfully',
