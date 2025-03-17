@@ -15,7 +15,7 @@ export const generateAnonymousId = (
 	if (!req.cookies.anonymousId) {
 		const anonymousId = uuidv4(); // Generate a unique ID
 		res.cookie('anonymousId', anonymousId, {
-			maxAge: 30 * 60 * 1000,
+			maxAge: 10 * 60 * 1000,
 			// secure: true, // Required for HTTPS
 			sameSite: 'none', // Required for cross-origin requests
 			// domain: '.example.com', // Replace with your parent domain
