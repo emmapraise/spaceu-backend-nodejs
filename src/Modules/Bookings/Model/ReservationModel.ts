@@ -117,11 +117,11 @@ export const reservationExistsModel = async (data: any) => {
 };
 
 export const deleteReservationCronJob = async () => {
-	const halfHourAgo = new Date(new Date().getTime() - 30 * 60 * 1000);
+	const tenMinsAgo = new Date(new Date().getTime() - 10 * 60 * 1000);
 
 	return await prisma.reservation.deleteMany({
 		where: {
-			updated_at: { lte: halfHourAgo },
+			updated_at: { lte: tenMinsAgo },
 			booking_id: null,
 		},
 	});
