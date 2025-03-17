@@ -12,7 +12,6 @@ const contactEmail = process.env.CONTACT_EMAIL;
 const contactPhone = process.env.CONTACT_PHONE;
 const contactAddress = process.env.CONTACT_ADDRESS;
 
-logger.info(`${contactEmail}, ${contactPhone}, ${contactAddress}`);
 
 const transporter: any = nodemailer.createTransport(
 	new SMTPTransport({
