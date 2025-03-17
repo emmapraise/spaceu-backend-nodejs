@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { convertMinutesToTime, formatDate } from './ReservationHelper';
 import { generateGoogleCalendarLink } from '../Constant/TimeConstant';
+import logger from './logger';
 
 require('dotenv').config();
 const contactEmail = process.env.CONTACT_EMAIL;
@@ -60,9 +61,11 @@ export const sendCustomerBookingEmail = async (booking: any) => {
 			html: htmlContent,
 		});
 
-		console.log('Customer Email sent', info.messageId);
+		
+		logger.info("Customer emails sent")
 	} catch (error) {
-		console.error('Error sending email:', error);
+		
+		logger.error('Error sending email:', error);
 	}
 };
 
@@ -81,9 +84,10 @@ export const sendAdminsBookingEmail = async (booking: any) => {
 			subject: 'New Booking',
 			html: htmlContent,
 		});
-		console.log('Admin Email sent:', info.messageId);
+		logger.info("Admin emails sent")
+		
 	} catch (error) {
-		console.error('Error sending email:', error);
+		logger.error('Error sending email:', error);
 	}
 };
 
@@ -108,8 +112,8 @@ export const sendContactUsEmail = async (data:any) => {
 			subject: "New Message",
 			html: htmlContent,
 		});
-		console.log('Contact us Email sent:', info.messageId);
+		logger.info("Contact email sent")
 	} catch (error) {
-		console.error('Error sending email:', error);
+		logger.error("Error sending contact email:", error);
 	}
 };

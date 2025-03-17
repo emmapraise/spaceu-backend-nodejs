@@ -3,5 +3,4 @@ import { deleteReservationCronJob } from '../../Modules/Bookings/Model/Reservati
 
 export const reservationCron = cron.schedule('*/10 * * * *', () => {
     deleteReservationCronJob();
-    console.log("Cron scheduled");
 });
