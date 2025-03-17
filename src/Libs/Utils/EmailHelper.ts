@@ -12,13 +12,12 @@ const contactEmail = process.env.CONTACT_EMAIL;
 const contactPhone = process.env.CONTACT_PHONE;
 const contactAddress = process.env.CONTACT_ADDRESS;
 
-logger.info(`${contactEmail}, ${contactPhone}, ${contactAddress}`);
 
 const transporter: any = nodemailer.createTransport(
 	new SMTPTransport({
 		host: process.env.SMTP_HOST || ' ',
 		port: Number(process.env.SMTP_PORT), // Use 587 for TLS
-		secure: false, // Use false for port 587 (TLS)
+		secure: true, // Use false for port 587 (TLS)
 		auth: {
 			user: process.env.SMTP_USER, // Your cPanel email
 			pass: process.env.SMTP_PASS, // Your email password
