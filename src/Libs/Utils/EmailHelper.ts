@@ -17,7 +17,7 @@ const transporter: any = nodemailer.createTransport(
 	new SMTPTransport({
 		host: process.env.SMTP_HOST || ' ',
 		port: Number(process.env.SMTP_PORT), // Use 587 for TLS
-		secure: false, // Use false for port 587 (TLS)
+		secure: true, // Use false for port 587 (TLS)
 		auth: {
 			user: process.env.SMTP_USER, // Your cPanel email
 			pass: process.env.SMTP_PASS, // Your email password
