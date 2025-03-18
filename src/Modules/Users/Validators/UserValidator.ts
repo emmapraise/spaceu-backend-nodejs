@@ -15,14 +15,12 @@ export const userRule = [
 	// body('password').isString().withMessage('Password must be a string'),
 	// body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
 	body('phone_number')
-		.isLength({ min: 11 })
+		.isLength({ min: 10 })
 		.withMessage('Phone number must be at least 11 characters long')
 		.notEmpty()
 		.withMessage('Phone number must be at least 11 characters long'),
 	body('whatsapp_number')
-		.optional()
-		.isLength({ min: 11 })
-		.withMessage('Phone number must be at least 11 characters long'),
+		.optional(),
 ];
 
 export const userIdRule = [
