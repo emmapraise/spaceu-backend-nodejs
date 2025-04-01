@@ -64,3 +64,9 @@ export const spaceIdRequest = Validator([
 	param('space_id').isInt().withMessage('Space id must be a number'),
 ]);
 export const getReservationRequest = Validator(getReservationRule);
+export const deleteReservationRequest = Validator([
+	param('id')
+		.isInt()
+		.withMessage('Id must be a number')
+		.custom(reservationExists),
+]);
