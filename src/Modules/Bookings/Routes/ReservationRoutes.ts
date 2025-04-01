@@ -7,11 +7,13 @@ import {
 	getReservationByBookingIdHandler,
 	getReservationBySpaceAndDateHandler,
 	getAnonymousReservationsHandler,
+	deleteReservationHandler,
 } from '../Controller/ReservationController';
 import {
 	createReservationRequest,
 	spaceIdRequest,
 	getReservationRequest,
+	deleteReservationRequest,
 } from '../Validator/ReservationValidator';
 
 import { generateAnonymousId } from '../../../Libs/Middleware/anonymousSignIn';
@@ -40,5 +42,6 @@ router.get(
 );
 
 router.get('/', generateAnonymousId, getAnonymousReservationsHandler);
+router.delete('/:id', deleteReservationRequest, deleteReservationHandler);
 
 export default router;

@@ -7,6 +7,7 @@ import {
 	getReservedSpaceModel,
 	getReservationBySpaceId,
 	getAnonymousReservationsModel,
+	deleteReservationModel,
 	reservationExistsModel,
 } from '../Model/ReservationModel';
 import { TimeSlotEnum } from '../../../Libs/Constant/TimeConstant';
@@ -19,11 +20,11 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 	try {
 		const validatedRecord = req.validated();
 		const anonymousId: any = req.anonymous_id;
-		console.log("anonId: " + anonymousId);
+		console.log('anonId: ' + anonymousId);
 		const reservationExists = await reservationExistsModel(validatedRecord);
 
 		if (reservationExists) {
-			 res
+			res
 				.json({
 					status: false,
 					message:
@@ -33,10 +34,10 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 						)} to ${convertMinutesToTime(reservationExists.end_time)}`,
 				})
 				.status(409);
-				return;
+			return;
 		}
 		const result = await createReservation(validatedRecord, anonymousId);
-		 res
+		res
 			.json({
 				message: 'Created reservation successfully',
 				status: true,
@@ -44,7 +45,7 @@ export const createReservationHandler = async (req: Request, res: Response) => {
 			})
 			.status(201);
 	} catch (error: any) {
-		 res.status(500).json({ message: 'Server Error', error: error.message });
+		res.status(500).json({ message: 'Server Error', error: error.message });
 	}
 };
 
@@ -154,5 +155,20 @@ export const getReservationBySpaceAndDateHandler = async (
 		res
 			.status(500)
 			.json({ message: 'Server Error', error: error.message, status: false });
+	}
+};
+
+export const deleteReservationHandler = async (req: Request, res: Response) => {
+	try {
+		const { id } = req.validated();
+		await deleteReservationModel(id);
+		res
+			.json({
+				message: 'Deleted reservation successfully',
+				status: true,
+			})
+			.status(200);
+	} catch (error) {
+		res.status(500).send('Server Error');
 	}
 };
