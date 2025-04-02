@@ -37,7 +37,7 @@ export const updateReservation = async (
 };
 
 export const deleteReservationModel = async (id: number) => {
-	return await prisma.reservation.delete({ where: { id } });
+	return await prisma.reservation.delete({ where: { id: Number(id) } });
 };
 
 export const findReservationById = async (id: number) => {
