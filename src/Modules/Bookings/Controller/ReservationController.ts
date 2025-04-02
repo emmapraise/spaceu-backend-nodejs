@@ -168,7 +168,7 @@ export const deleteReservationHandler = async (req: Request, res: Response) => {
 				status: true,
 			})
 			.status(200);
-	} catch (error) {
-		res.status(500).send('Server Error');
+	} catch (error:any) {
+		res.status(500).json({message : error.message});
 	}
 };
