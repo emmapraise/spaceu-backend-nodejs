@@ -96,25 +96,25 @@ export const getAnonymousReservationsModel = async (anonymousId: any) => {
 	});
 };
 
-export const reservationExistsModel = async (data: any) => {
-	return await prisma.reservation.findFirst({
-		where: {
-			date: new Date(data.date),
-			space_id: parseInt(data.space_id),
-			OR: [
-				{
-					AND: [
-						{ start_time: { lt: data.end_time } }, // Existing start_time is before or at the new end_time
-						{ end_time: { gt: data.start_time } }, // Existing end_time is after or at the new start_time
-					],
-				},
-			],
-		},
-		include: {
-			space: true,
-		},
-	});
-};
+// export const reservationExistsModel = async (data: any) => {
+// 	return await prisma.reservation.findFirst({
+// 		where: {
+// 			date: new Date(data.date),
+// 			space_id: parseInt(data.space_id),
+// 			OR: [
+// 				{
+// 					AND: [
+// 						{ start_time: { lt: data.end_time } }, // Existing start_time is before or at the new end_time
+// 						{ end_time: { gt: data.start_time } }, // Existing end_time is after or at the new start_time
+// 					],
+// 				},
+// 			],
+// 		},
+// 		include: {
+// 			space: true,
+// 		},
+// 	});
+// };
 
 export const deleteReservationCronJob = async () => {
 	const tenMinsAgo = new Date(new Date().getTime() - 10 * 60 * 1000);
@@ -123,6 +123,48 @@ export const deleteReservationCronJob = async () => {
 		where: {
 			updated_at: { lte: tenMinsAgo },
 			booking_id: null,
+		},
+	});
+};
+
+
+const getRelatedSpaceIds = async (spaceId: number): Promise<number[]> => {
+	const result: Set<number> = new Set([spaceId]);
+
+	// Fetch the space to get its parent
+	const space = await prisma.space.findUnique({
+		where: { id: spaceId },
+		select: { parent_space_id: true },
+	});
+
+	if (space?.parent_space_id) {
+		result.add(space.parent_space_id);
+	}
+
+	// Fetch direct children
+	const children = await prisma.space.findMany({
+		where: { parent_space_id: spaceId },
+		select: { id: true },
+	});
+
+	children.forEach((child) => result.add(child.id));
+
+	return Array.from(result);
+};
+
+export const reservationExistsModel = async (data: any) => {
+	const spaceId = parseInt(data.space_id);
+	const relatedSpaceIds = await getRelatedSpaceIds(spaceId);
+
+	return await prisma.reservation.findFirst({
+		where: {
+			date: new Date(data.date),
+			space_id: { in: relatedSpaceIds },
+			start_time: { lt: data.end_time },
+			end_time: { gt: data.start_time },
+		},
+		include: {
+			space: true,
 		},
 	});
 };
